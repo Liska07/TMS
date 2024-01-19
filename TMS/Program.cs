@@ -52,7 +52,7 @@ void FuncTask2()
             Console.WriteLine("Точка находится в третьей четверти");
         }
             
-        else if (x > 0 && y < 0)
+        else
         {
             Console.WriteLine("Точка находится в четвертой четверти");
         }     
@@ -146,13 +146,13 @@ void FuncTask4()
 
     else if (D == 0)
     {
-        double x = -b / (2 * a);
+        double x = -b / (2d * a);
         Console.WriteLine($"Решением квадратного уравнения является корень Х = {x}");
     }
     else
     {
-        double x1 = (-b + Math.Sqrt(D)) / (2 * a);
-        double x2 = (-b - Math.Sqrt(D)) / (2 * a);
+        double x1 = (-b + Math.Sqrt(D)) / (2d * a);
+        double x2 = (-b - Math.Sqrt(D)) / (2d * a);
         Console.WriteLine($"Решением квадратного уравнения являются корни Х1 = {x1} и Х2 = {x2}");
     }
 
@@ -215,7 +215,7 @@ void FuncTask5()
         }
     }
     
-    else if (a >= 20 && a <= 99)
+    else 
     {
         int tens = a / 10;
 
