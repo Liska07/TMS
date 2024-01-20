@@ -7,12 +7,12 @@
 //FuncTask6();
 //FuncTask7();
 //FuncTask7_2();
-
 //FuncTask9();
+//FuncTask9_New();
 //FuncTask10();
 //FuncTask10_2();
-
 //FuncTask12();
+//FuncTask12_new();
 //FuncTask13();
 
 void FuncTask1()
@@ -42,7 +42,7 @@ void FuncTask2()
     Console.Write("Введите число: ");
     int a = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine("Числа, которые деляться на введенное число:");
+    Console.WriteLine("Числа, которые делятся на введенное число:");
 
     for (int i = a; i <= 1000; i+= a)
     {
@@ -74,7 +74,7 @@ void FuncTask4()
     Console.Write("Введите число: ");
     int a = Convert.ToInt32(Console.ReadLine());
     
-    for (int i = a - 1; i > 0 ; i--)
+    for (int i = a / 2; i > 0 ; i--)
     {
         if (a % i == 0)
         {
@@ -94,24 +94,22 @@ void FuncTask5()
     Console.Write("Введите второе число: ");
     int b = Convert.ToInt32(Console.ReadLine());
 
-    int start, finish;
+    int start = a; 
+    int finish = b;
 
-    if (a < b)
-    {
-        start = a;
-        finish = b;
-    }
-    else
+    if (b < a)
     {
         start = b;
         finish = a;
     }
-
+  
     int result = 0;
 
-    for(int i = start; i <= finish; i++)
+    if (start % 7 != 0) // Если не добавить эту проверку, то стартовое чсло выпадет из диапазона в случае, когда оно кратно 7 (в моей реализации А и В входят в диапазон)
+    start = start + 7 - (start % 7);
+
+    for(int i = start; i <= finish; i+=7)
     {
-        if (i % 7 == 0)
             result += i;   
     }
     Console.WriteLine("Результат суммы всех чисел из диапазона от A до B, которые делятся без остатка на 7 = " + result);
@@ -232,6 +230,25 @@ void FuncTask9()
     }
     Console.WriteLine("Количество нечетных цифр этого числа = " + count);
 }
+void FuncTask9_New()
+{
+    //Пользователь вводит 1 число. Найти количество нечетных цифр этого числа.
+
+    Console.Write("Введите число: ");
+    int a = Convert.ToInt32(Console.ReadLine());
+    int count = 0;
+
+    do
+    {
+        int b = a % 10;
+        if (b % 2 != 0)
+            count++;
+        a /= 10;
+    }
+    while (Math.Abs(a) >= 1);
+
+    Console.WriteLine("Количество нечетных цифр этого числа = " + count);
+}
 
 void FuncTask10()
 {
@@ -299,6 +316,43 @@ void FuncTask12()
     
 }
 
+void FuncTask12_new()
+{
+    //Пользователь вводит 2 числа. Сообщите, есть ли в написании двух чисел одинаковые цифры. Например, для пары 123 и 3456789, ответом будет являться “ДА”, а, для пары 500 и 99 - “НЕТ”.
+
+    Console.Write("Введите первое число: ");
+    int num1 = Math.Abs(Convert.ToInt32(Console.ReadLine())); //сразу отсекаю знак, в случае если ввели отрицательное число
+
+    Console.Write("Введите второе число: ");
+    int num2 = Math.Abs(Convert.ToInt32(Console.ReadLine()));
+
+    bool result = false;
+
+    do
+    {
+        int remainder1 = num1 % 10;
+        int tempNum2 = num2;
+        do
+        {
+            int reminder2 = tempNum2 % 10;
+            if(remainder1 == reminder2)
+            {
+                result = true;
+                break; //выхожу из цикла сразу, как нашла первое совпадение
+            }
+            tempNum2 /= 10;
+        }
+        while (tempNum2 > 0);
+        if (result)
+            break;
+
+        num1 /= 10;
+    }
+    while (num1 > 0);
+
+    Console.WriteLine(result ? "Да" : "Нет");
+
+}
 void FuncTask13()
 {
     Console.Write("Введите число: ");
