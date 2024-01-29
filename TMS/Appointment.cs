@@ -9,15 +9,19 @@ namespace TMS
 {
     internal class Appointment
     {
-        public string Date {  get; set; }
-        public Doctor Doctor { get; set; }
-        public Patient Patient { get; set; }
+        private string _date;
+        private Doctor _doctor;
+        private Patient _patient;
 
         public Appointment(string date, Doctor doctor, Patient patient)
         {
-            Date = date;
-            Doctor = doctor;
-            Patient = patient;
+            _date = date;
+            _doctor = doctor;
+            _patient = patient;
+        }
+        public override string ToString()
+        {
+            return _date + "\t" + _doctor.Surname + "\t " + _patient.Surname;
         }
     }
 }

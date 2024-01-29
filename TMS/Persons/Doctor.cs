@@ -9,7 +9,7 @@ namespace TMS.Persons
     }
     public abstract class Doctor : Employee
     {
-        public DocQualification qualification;
+        private DocQualification qualification;
 
         private int _officeNumber;
         public int OfficeNumber
@@ -24,7 +24,6 @@ namespace TMS.Persons
                     _officeNumber = value;
                 else
                     Console.WriteLine("Вы ввели некорректный номер кабинета!");
-
             }
         }
 
@@ -39,10 +38,32 @@ namespace TMS.Persons
         {
             Console.WriteLine(", завершай рабочий день как простой доктор");
         }
+
         public override void SendMessage()
         {
             base.SendMessage();
             Console.WriteLine(", вперед и с песней! Пациенты ждут!");
+        }
+
+        public int CountBonus()
+        {
+            int bonus = 0;
+
+            if (CountWorkExperience() >= 5 && qualification == DocQualification.highest)
+                bonus = 7000;
+            else if (CountWorkExperience() >= 5 && qualification == DocQualification.first)
+                bonus = 5000;
+            else if (CountWorkExperience() >= 5 && qualification == DocQualification.second)
+                bonus = 3000;
+            return bonus;
+        }
+
+        private int CountWorkExperience()
+        {
+            int workExperience;
+            var currentYear = DateTime.Now.Year;
+            workExperience = currentYear - YearOfStarWork;
+            return workExperience;
         }
     }
 }

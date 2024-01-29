@@ -40,20 +40,7 @@ namespace TMS
                 foreach (var doctor in doctors)
                 {
                     doctor.ShowSurnameName();
-                    Console.WriteLine(" - Премия " + CountBonus(doctor) + " руб.");
-                }
-
-                int CountBonus(Doctor doc)
-                {
-                    int bonus = 0;
-                    var currentYear = DateTime.Now.Year;
-                    if (currentYear - doc.YearOfStarWork >= 5 && doc.qualification == DocQualification.highest)
-                        bonus = 7000;
-                    else if (currentYear - doc.YearOfStarWork >= 5 && doc.qualification == DocQualification.first)
-                        bonus = 5000;
-                    else if (currentYear - doc.YearOfStarWork >= 5 && doc.qualification == DocQualification.second)
-                        bonus = 3000;
-                    return bonus;
+                    Console.WriteLine(" - Премия " + doctor.CountBonus() + " руб.");
                 }
             }
 
@@ -90,7 +77,7 @@ namespace TMS
                 };
                 foreach (var appointment in appointments)
                 {
-                    Console.WriteLine(appointment.Date + "\t" + appointment.Doctor.Surname + "\t " + appointment.Patient.Surname);
+                    Console.WriteLine(appointment);
                 }
             }
 
@@ -131,15 +118,15 @@ namespace TMS
             {
                 Console.WriteLine("\n" + new string('-', 10) + "Воспользовались услугами сторонних компаний" + new string('-', 10));
                 OrderedService serv1 = new OrderedService("12.12.2023", "Вывоз мусора");
-                serv1.OrderService(TypeOfService.Cleaning);
+                serv1.OrderService(TypeOfService.Cleaning, "\"Новая клининговая компания\"");
 
                 OrderedService serv2 = new OrderedService("15.01.2024", "Отправка документов");
-                serv2.OrderService(TypeOfService.Delivery);
+                serv2.OrderService(TypeOfService.Delivery, "\"Курьерская компания\"");
 
-                OrderedService servTest = new OrderedService("15.01.2024", "Отправка документов"); //для тестирования try-catch
+                OrderedService servTest = new OrderedService("15.01.2024", "Отправка документов"); //Для тестирования try-catch.
                 try
                 {
-                    servTest.OrderService(TypeOfService.Test);
+                    servTest.OrderService(TypeOfService.Test, "TEST");
                 }
                 catch (Exception ex)
                 {

@@ -25,20 +25,20 @@ namespace TMS
             Description = description;
         }
 
-        public void OrderService(TypeOfService typeOfService)
+        public void OrderService(TypeOfService typeOfService, string nameOfCompany)
         {
             Company Company;
 
             switch (typeOfService)
             {
                 case TypeOfService.Cleaning:
-                    Company = new Cleaning("\"Новая клининговая компания\"");
+                    Company = new Cleaning(nameOfCompany);
                     break;
                 case TypeOfService.Delivery:
-                    Company = new Delivery("\"Курьерская компания\"");
+                    Company = new Delivery(nameOfCompany);
                     break;
                 default:
-                    throw new NotImplementedException("В классе OrderService нет реализации для " + nameof(TypeOfService));       
+                    throw new NotImplementedException("В классе OrderService нет реализации для " + nameof(TypeOfService));
             }
             Company.Work();
         }
