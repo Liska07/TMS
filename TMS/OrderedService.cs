@@ -11,9 +11,9 @@ namespace TMS
     {
         Cleaning,
         Delivery,
-        Test //для тестирования try-catch
+        Test //Для тестирования try-catch.
     }
-    internal class OrderedService
+    public class OrderedService
     {
         public string Date {  get; set; }
 
@@ -25,7 +25,7 @@ namespace TMS
             Description = description;
         }
 
-        public void OrderService(TypeOfService typeOfService, string nameOfCompany)
+        public string OrderService(TypeOfService typeOfService, string nameOfCompany)
         {
             Company Company;
 
@@ -38,9 +38,9 @@ namespace TMS
                     Company = new Delivery(nameOfCompany);
                     break;
                 default:
-                    throw new NotImplementedException("В классе OrderService нет реализации для " + nameof(TypeOfService));
+                    throw new NotImplementedException("В классе OrderedService нет реализации для " + nameof(TypeOfService));
             }
-            Company.Work();
+            return Company.Work();
         }
     }
 }

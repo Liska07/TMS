@@ -12,9 +12,9 @@ namespace TMS.Companies
         {
         }
 
-        public override void Work()
+        public override string Work()
         {
-            Console.WriteLine(Name + " навела чистоту и порядок!");
+            return Name + " навела чистоту и порядок!";
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TMS.Persons
                 if (value > 0)
                     _docNumber = value;
                 else
-                    Console.WriteLine("Вы ввели некорректный номер кабинета!");
+                    throw new ArgumentException("Вы ввели некорректный номер документа!");
             }
         }
         public Patient(string surname, string name, Gender gender, int yearOfBirth, int docNumber)
@@ -26,10 +26,13 @@ namespace TMS.Persons
             DocNumber = docNumber;
         }
 
-        public override void SendMessage()
+        public override string SendMessage()
         {
-            base.SendMessage();
-            Console.WriteLine(", приходите к нам лечиться!");
+            return base.SendMessage() + ", приходите к нам лечиться!";
+        }
+        public override void OnFire()
+        {
+            Console.WriteLine(ShowFullName() + ", спасай свою шкуру! Горим!");
         }
     }
 }

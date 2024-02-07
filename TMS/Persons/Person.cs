@@ -22,10 +22,10 @@ namespace TMS.Persons
             }
             set
             {
-                if (value != "")
-                    _surname = value;
+                if (value == "" || value == null)
+                    throw new ArgumentException("Вы указали некорректную фамилию!");
                 else
-                    Console.WriteLine("Вы указали некорректную фамилию!");
+                    _surname = value;
             }
         }
         private string _name;
@@ -37,10 +37,10 @@ namespace TMS.Persons
             }
             set
             {
-                if (value != "")
-                    _name = value;
+                if (value == "" || value == null)
+                    throw new ArgumentException("Вы указали некорректное имя!");
                 else
-                    Console.WriteLine("Вы указали некорректное имя!");
+                    _name = value;
             } 
         }
         public Gender gender;
@@ -57,7 +57,7 @@ namespace TMS.Persons
                 if (value > 1900)
                     _yearOfBirth = value;
                 else
-                    Console.WriteLine("Вы указали некорректный год рождения!");
+                    throw new ArgumentException("Вы указали некорректный год рождения!");
             }
         }
 
@@ -68,13 +68,16 @@ namespace TMS.Persons
             this.gender = gender;
             YearOfBirth = yearOfBirth;
         }
-        public void ShowSurnameName()
+        public string ShowFullName()
         {
-            Console.Write(Surname + " " + Name);
+            return Surname + " " + Name;
         }
-        public virtual void SendMessage()
+        public virtual string SendMessage()
         {
-            ShowSurnameName();
+            return ShowFullName();
         }
+
+        public abstract void OnFire();
+       
     }
 }

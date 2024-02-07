@@ -3,23 +3,23 @@ namespace TMS.Persons
 {
     public class Dentist : Doctor
     {
-        public Dentist(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification, int officeNumber)
-            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification, officeNumber)
+        public Dentist(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification)
+            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification)
         {
            
         }
-        public override void Work()
+        public override string Work()
         {
-            Console.WriteLine("Удаление зубов");
+            return "Удаление зубов";
         }
-        public override void FinishWorkDay()
+        public override string FinishWorkDay()
         {
-            Console.WriteLine(", cобери зубы и иди домой!");
+            return", cобери зубы и иди домой!";
         }
-        public override void SendMessage()
+        public override string  SendMessage()
         {
-            ShowSurnameName();
-            Console.WriteLine(", зуб сам себя не вырвет! Вперёд работать!");
+            
+            return ShowFullName() + ", зуб сам себя не вырвет! Вперёд работать!";
         }
     }
 }

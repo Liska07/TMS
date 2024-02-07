@@ -8,6 +8,6 @@ namespace TMS
 {
     internal interface IMessageble
     {
-        void SendMessage();
+        string SendMessage();
     }
 }

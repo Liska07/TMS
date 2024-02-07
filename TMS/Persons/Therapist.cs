@@ -3,19 +3,19 @@ namespace TMS.Persons
 {
     public class Therapist : Doctor
     {
-        public Therapist(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification, int officeNumber)
-            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification, officeNumber)
+        public Therapist(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification)
+            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification)
         {
 
         }
-        public override void Work()
+        public override string Work()
         {
-            Console.WriteLine("Измерение температуры");
+            return "Измерение температуры";
         }
-        public override void SendMessage()
+        public override string SendMessage()
         {
-            ShowSurnameName();
-            Console.WriteLine(", хватай градусник и мерь температуру!");
+            
+            return ShowFullName() + ", хватай градусник и мерь температуру!";
         }
     }
 }

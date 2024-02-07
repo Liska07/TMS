@@ -9,7 +9,7 @@ namespace TMS.Persons
     public abstract class Employee : Person
     {
         private int _yearOfStartWork;
-        public int YearOfStarWork
+        public int YearStartWork
         {
             get
             {
@@ -20,20 +20,20 @@ namespace TMS.Persons
                 if (value >= 2000)
                     _yearOfStartWork = value;
                 else
-                    Console.WriteLine("Вы указали некорректный год начала работы сотрудника в клинике!");
+                    throw new ArgumentException("Вы указали некорректный год начала работы сотрудника в клинике!");
             }
         }
         public Employee(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork)
                 : base(surname, name, gender, yearOfBirth)
         {
-            YearOfStarWork = yearOfStartWork;
+            YearStartWork = yearOfStartWork;
         }
 
-        public abstract void Work();
+        public abstract string Work();
 
-        public virtual void FinishWorkDay()
+        public virtual string FinishWorkDay()
         {
-            Console.WriteLine(", завершай рабочий день как обычный сотрудник");
+            return ", завершай рабочий день как обычный сотрудник";
         }
     }
 }

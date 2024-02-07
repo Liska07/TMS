@@ -4,18 +4,18 @@ namespace TMS.Persons
 {
     public class Surgeon : Doctor
     {
-        public Surgeon(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification, int officeNumber)
-            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification, officeNumber)
+        public Surgeon(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification)
+            : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification)
         {
 
         }
-        public override void Work()
+        public override string Work()
         {
-            Console.WriteLine("Ампутация чего только пожелаете");
+            return "Ампутация чего только пожелаете";
         }
-        public override void FinishWorkDay()
+        public override string FinishWorkDay()
         {
-            Console.WriteLine(", прибери, что ампутировал и свободен!");
+            return ", прибери, что ампутировал и свободен!";
         }
     }
 }

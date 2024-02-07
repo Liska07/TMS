@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,14 +14,17 @@ namespace TMS.Persons
         {
            
         }
-        public override void Work()
+        public override string Work()
         {
-            Console.WriteLine("Увольнение по поводу и без");
+            return "Увольнение по поводу и без";
         }
-        public override void SendMessage()
+        public override string SendMessage()
         {
-            base.SendMessage();
-            Console.WriteLine(", пора кого-нибудь уволить!"); ;
+            return base.SendMessage() + ", пора кого-нибудь уволить!"; ;
+        }
+        public override void OnFire()
+        {
+            Console.WriteLine("Менеджер, горим! " + ShowFullName() +  ", хватай бабло, а то сгорит!");
         }
     }
 }
