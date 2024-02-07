@@ -17,7 +17,8 @@ namespace TMS.Persons
             }
             set
             {
-                if (value >= 2000)
+                int yearOfStartClinic = 2000;
+                if (value >= yearOfStartClinic)
                     _yearOfStartWork = value;
                 else
                     throw new ArgumentException("Вы указали некорректный год начала работы сотрудника в клинике!");

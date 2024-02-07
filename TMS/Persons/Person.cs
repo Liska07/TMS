@@ -54,7 +54,8 @@ namespace TMS.Persons
             }
             set
             {
-                if (value > 1900)
+                int minYearOfBirth = 1900;
+                if (value > minYearOfBirth)
                     _yearOfBirth = value;
                 else
                     throw new ArgumentException("Вы указали некорректный год рождения!");
