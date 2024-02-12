@@ -7,7 +7,7 @@ using TMS.Persons;
 
 namespace TMS
 {
-    internal class Appointment
+    public class Appointment
     {
         public string Date { get; private set; }
         public Doctor Doctor { get; private set; }

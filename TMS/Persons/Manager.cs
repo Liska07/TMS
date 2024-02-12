@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace TMS.Persons
 {
-    internal class Manager : Employee
+    public class Manager : Employee
     {
         public Manager(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork)
                 : base(surname, name, gender, yearOfBirth, yearOfStartWork)
         {
-           
         }
         public override string Work()
         {

@@ -6,7 +6,6 @@ namespace TMS.Persons
         public Dentist(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification)
             : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification)
         {
-           
         }
         public override string Work()
         {
@@ -18,7 +17,6 @@ namespace TMS.Persons
         }
         public override string  SendMessage()
         {
-            
             return ShowFullName() + ", зуб сам себя не вырвет! Вперёд работать!";
         }
     }

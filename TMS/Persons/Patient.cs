@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TMS.Persons
 {
-    internal class Patient : Person
+    public class Patient : Person
     {
         private int _docNumber;
         public int DocNumber
@@ -33,6 +33,11 @@ namespace TMS.Persons
         public override void OnFire()
         {
             Console.WriteLine(ShowFullName() + ", спасай свою шкуру! Горим!");
+        }
+
+        public override string ToString()
+        {
+            return ShowFullName() + " - " + YearOfBirth + "г. - Полис: " + DocNumber;
         }
     }
 }

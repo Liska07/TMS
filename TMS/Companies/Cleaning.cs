@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TMS.Companies
 {
-    internal class Cleaning : Company
+    public class Cleaning : Company
     {
         public Cleaning(string name) : base(name)
         {

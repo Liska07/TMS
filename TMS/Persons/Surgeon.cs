@@ -7,7 +7,6 @@ namespace TMS.Persons
         public Surgeon(string surname, string name, Gender gender, int yearOfBirth, int yearOfStartWork, DocQualification qualification)
             : base(surname, name, gender, yearOfBirth, yearOfStartWork, qualification)
         {
-
         }
         public override string Work()
         {

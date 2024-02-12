@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TMS
 {
-    internal class MedicationsBalance
+    public class MedicationsBalance
     {
         public Dictionary<string, int> MedicsBalance;
         
@@ -22,14 +22,15 @@ namespace TMS
                 {"Назонекс", 20}
             };
         }
-        int minQuantity = 10;
        
         public Dictionary<string, int> GetMedToOrder()
         {
+            int minBalance = 10;
+            int stock = 5;
             Dictionary<string, int> ListToOrder =
                 MedicsBalance
-                    .Where(a => a.Value < minQuantity)
-                    .Select(a => new KeyValuePair<string, int>(a.Key,minQuantity - a.Value))
+                    .Where(a => a.Value < minBalance)
+                    .Select(a => new KeyValuePair<string, int>(a.Key,minBalance - a.Value + stock))
                     .ToDictionary();
 
             return ListToOrder;

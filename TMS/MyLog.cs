@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace TMS
 {
-    internal static class MyLog
+    public static class MyLog
     {
         const string Path = "C:\\Users\\Liska\\Desktop\\LiskaLog.txt";
       
         public static void LogException(Exception ex)
         {
-            File.AppendAllText(Path, $"Исключение: {ex.Message}" + Environment.NewLine);
-            File.AppendAllText(Path, $"Трассировка стека: {ex.StackTrace}" + Environment.NewLine + Environment.NewLine);
+            File.AppendAllText(Path, DateTime.Now + $" Исключение: {ex.Message}" + Environment.NewLine);
+            File.AppendAllText(Path, DateTime.Now + $" Трассировка стека: {ex.StackTrace}" + Environment.NewLine + Environment.NewLine);
         }
     }
 }

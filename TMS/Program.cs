@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMS.Persons;
 using TMS.Companies;
+using System.Threading.Channels;
 
 namespace TMS
 {
@@ -39,6 +40,14 @@ namespace TMS
                 pat3 = new Patient("П_Желтов", "Александр", Gender.male, 1978, 5478);
                 companyClean1 = new Cleaning("Super Clean");
                 companyDel1 = new Delivery("Wow Delivery");
+
+                //Раскомментировать, если нужно потестить try-catch.
+                //Patient patTest1 = new Patient("", "Александра", Gender.female, 1985, 1585);
+                //Patient patTest2 = new Patient("Фамилия", "", Gender.female, 1985, 1585);
+                //Patient patTest3 = new Patient("Фамилия", "Имя", Gender.female, -1985, 1585);
+                //Patient patTest4 = new Patient("Фамилия", "Имя", Gender.female, 1985, -1585);
+                //Manager managTest = new Manager("М_Капустин", "Руслан", Gender.male, 1982, -2020);
+                //companyDel1 = new Delivery("");
             }
             catch (ArgumentException ex)
             {
@@ -105,161 +114,160 @@ namespace TMS
 
             Console.ReadKey();
 
-            void CountDoctorsBonus(List<Doctor> doctors)
-            {
-                Console.WriteLine(new string('-', 10) + "Список докторов и их премий" + new string('-', 10));
+        }
+        static void CountDoctorsBonus(List<Doctor> doctors)
+        {
+            Console.WriteLine(new string('-', 10) + "Список докторов и их премий" + new string('-', 10));
 
-                foreach (Doctor doctor in doctors)
+            foreach (Doctor doctor in doctors)
+            {
+                Console.WriteLine(doctor.ShowFullName() + " - Премия: " + doctor.CountBonus() + " руб.");
+            }
+        }
+        static void PrintEmployeesWorks(List<Employee> employees)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Список сотрудников и выполняемой работы" + new string('-', 10));
+
+            foreach (Employee employee in employees)
+            {
+                Console.WriteLine(employee.ShowFullName() + " - " + employee.Work());
+            }
+        }
+
+        static void FinishEmployeesWorkDay(List<Employee> employees)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Работники завершают рабочий день" + new string('-', 10));
+
+            foreach (Employee employee in employees)
+            {
+                Console.WriteLine(employee.ShowFullName() + employee.FinishWorkDay());
+            }
+        }
+
+        static void PrintPeopleCertainGender(List<Person> people, Gender gender)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Список всех людей, указанного пола (" + gender + ")" + new string('-', 10));
+
+            List<Person> selectedPeople =
+                people
+                    .Where(a => a.gender == gender)
+                    .OrderBy(a => a.Surname)
+                    .ToList();
+
+            foreach (Person person in selectedPeople)
+            {
+                Console.WriteLine(person.ShowFullName());
+            }
+        }
+
+        static void PrintListAppointments(List<Appointment> appointments)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Прием врачей" + new string('-', 10));
+
+            List<Appointment> sortedAppointments =
+                appointments
+                    .OrderBy(a => a.Date)
+                    .ToList();
+
+            Console.WriteLine("Дата \t\tВрач \t\t Пациент");
+            foreach (Appointment appointment in sortedAppointments)
+            {
+                Console.WriteLine(appointment);
+            }
+        }
+
+        static void PrintPatientsForDay(List<Appointment> appointments, string date, string docSurname)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Список пациентов для врача " + docSurname + " на " + date + new string('-', 10));
+
+            List<Patient> selectedPatients =
+                appointments
+                    .Where(a => a.Date == date)
+                    .Where(a => a.Doctor.Surname == docSurname)
+                    .Select(a => a.Patient)
+                    .ToList();
+
+            foreach (Patient patient in selectedPatients)
+            {
+                Console.WriteLine(patient);
+            }
+        }
+
+        static void PrintMessagesForAll(List<IMessageble> messages)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Сообщения для всех участников" + new string('-', 10));
+
+            foreach (IMessageble message in messages)
+            {
+                Console.WriteLine(message.SendMessage());
+            }
+        }
+
+        static void OrderServiceOtherCompany()
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Воспользовались услугами сторонних компаний" + new string('-', 10));
+
+            var serv1 = new OrderedService("12.12.2023", "Вывоз мусора");
+            TryOrderService(serv1, TypeOfService.Cleaning, "\"Новая клининговая компания\"");
+
+            var serv2 = new OrderedService("15.01.2024", "Отправка документов");
+            TryOrderService(serv2, TypeOfService.Delivery, "\"Курьерская компания\"");
+
+            var servTest = new OrderedService("15.01.2024", "ТЕСТ"); //Для тестирования try-catch.
+            TryOrderService(servTest, TypeOfService.Test, "\"Тестовая компания\"");
+        }
+
+        static void TryOrderService(OrderedService serv, TypeOfService typeOfService, string nameOfCompany)
+        {
+            try
+            {
+                Console.WriteLine(serv.OrderService(typeOfService, nameOfCompany));
+            }
+            catch (NotImplementedException ex)
+            {
+                Console.WriteLine(ex.Message);
+                MyLog.LogException(ex);
+            }
+        }
+
+        static void FindPhoneOfEmployee(Dictionary<string, Employee> phoneBook, string surname)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Поиск по телефонному справочнику сотрудников" + new string('-', 10));
+
+            bool isFound = false;
+            foreach (KeyValuePair<string, Employee> phone in phoneBook)
+            {
+                if (phone.Value.Surname.ToLower().Contains(surname.ToLower()))
                 {
-                    Console.WriteLine(doctor.ShowFullName() + " - Премия: " + doctor.CountBonus() + " руб.");
+                    Console.WriteLine($"Тел: {phone.Key} - {phone.Value.Surname} {phone.Value.Name}");
+                    isFound = true;
                 }
             }
+            if (!isFound)
+                Console.WriteLine($"Сотрудника с фамилией {surname} в справочнике нет");
+        }
 
-            void PrintEmployeesWorks(List<Employee> employees)
+        static void PrintMedToOrder()
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Надо срочно сделать вот такой заказ на пилюльки" + new string('-', 10));
+
+            Dictionary<string, int> MedForOrder = new MedicationsBalance().GetMedToOrder();
+            foreach (KeyValuePair<string, int> item in MedForOrder)
             {
-                Console.WriteLine("\n" + new string('-', 10) + "Список сотрудников и выполняемой работы" + new string('-', 10));
-
-                foreach (Employee employee in employees)
-                {
-                    Console.WriteLine(employee.ShowFullName() + " - " + employee.Work());
-                }
+                Console.WriteLine(item.Key + " " + item.Value + " шт.");
             }
+        }
+        static void TurnOnFireAlarm(List<Person> people)
+        {
+            Console.WriteLine("\n" + new string('-', 10) + "Оповещение о пожаре" + new string('-', 10));
 
-            void FinishEmployeesWorkDay(List<Employee> employees)
+            foreach (Person person in people)
             {
-                Console.WriteLine("\n" + new string('-', 10) + "Работники завершают рабочий день" + new string('-', 10));
-
-                foreach (Employee employee in employees)
-                {
-                    Console.WriteLine(employee.ShowFullName() + employee.FinishWorkDay());
-                }
+                Fire += person.OnFire;
             }
-
-            void PrintPeopleCertainGender(List<Person> people, Gender gender) 
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Список всех женщин для 8 марта" + new string('-', 10));
-
-                List<Person> selectedPeople =
-                    people
-                        .Where(a => a.gender == Gender.female)
-                        .OrderBy(a => a.Surname)
-                        .ToList();
-
-                foreach (Person person in selectedPeople)
-                {
-                    Console.WriteLine(person.ShowFullName());
-                }
-            }
-
-            void PrintListAppointments(List<Appointment> appointments)
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Прием врачей" + new string('-', 10));
-
-                List<Appointment> sortedAppointments =
-                    appointments
-                        .OrderBy(a => a.Date)
-                        .ToList();
-
-                Console.WriteLine("Дата \t\tВрач \t\t Пациент");
-                foreach (Appointment appointment in sortedAppointments)
-                {
-                    Console.WriteLine(appointment);
-                }
-            }
-
-            void PrintPatientsForDay(List<Appointment> appointments, string data, string docSurname)
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Список пациентов для врача " + docSurname + " на " + data + new string('-', 10));
-
-                List<Patient> selectedPatients =
-                    appointments
-                        .Where(a => a.Date == data)
-                        .Where(a => a.Doctor.Surname == docSurname)
-                        .Select(a => a.Patient)
-                        .ToList();
-
-                foreach (Patient patient in selectedPatients)
-                {
-                    Console.WriteLine(patient.ShowFullName() + " - " + patient.YearOfBirth + "г. - Полис: " + patient.DocNumber);
-                }
-            }
-
-            void PrintMessagesForAll(List<IMessageble> messages)
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Сообщения для всех участников" + new string('-', 10));
-
-                foreach (IMessageble message in messages)
-                {
-                    Console.WriteLine(message.SendMessage());
-                }
-            }
-
-            void OrderServiceOtherCompany()
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Воспользовались услугами сторонних компаний" + new string('-', 10));
-
-                var serv1 = new OrderedService("12.12.2023", "Вывоз мусора");
-                TryOrderService(serv1, TypeOfService.Cleaning, "\"Новая клининговая компания\"");
-
-                var serv2 = new OrderedService("15.01.2024", "Отправка документов");
-                TryOrderService(serv2, TypeOfService.Delivery, "\"Курьерская компания\"");
-
-                var servTest = new OrderedService("15.01.2024", "ТЕСТ"); //Для тестирования try-catch.
-                TryOrderService(servTest, TypeOfService.Test, "\"Тестовая компания\"");
-            }
-
-            void TryOrderService(OrderedService serv, TypeOfService typeOfService, string nameOfCompany)
-            {
-                try
-                {
-                    Console.WriteLine(serv.OrderService(typeOfService, nameOfCompany));
-                }
-                catch (NotImplementedException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    MyLog.LogException(ex);
-                }
-            }
-
-            void FindPhoneOfEmployee(Dictionary<string, Employee> phoneBook, string surname)
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Поиск по телефонному справочнику сотрудников" + new string('-', 10));
-
-                bool isFound = false;
-                foreach (KeyValuePair<string, Employee> phone in phoneBook)
-                {
-                    if (phone.Value.Surname.ToLower().Contains(surname.ToLower()))
-                    {
-                        Console.WriteLine($"Тел: {phone.Key} - {phone.Value.Surname} {phone.Value.Name}");
-                        isFound = true;
-                    }
-                }
-                if (!isFound)
-                    Console.WriteLine($"Сотрудника с фамилией {surname} в справочнике нет");
-            }
-
-            void PrintMedToOrder()
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Надо срочно сделать вот такой заказ на пилюльки" + new string('-', 10));
-
-                Dictionary<string, int> MedForOrder = new MedicationsBalance().GetMedToOrder();
-                foreach (KeyValuePair<string, int> item in MedForOrder)
-                {
-                    Console.WriteLine(item.Key + " " + item.Value + " шт.");
-                }
-            }
-
-            void TurnOnFireAlarm(List<Person> people)
-            {
-                Console.WriteLine("\n" + new string('-', 10) + "Оповещение о пожаре" + new string('-', 10));
-
-                foreach (Person person in people)
-                {
-                    Fire += person.OnFire;
-                }
-                Fire -= dent2.OnFire;
-                Fire.Invoke();
-            }
+            Person dent = people.First(a => a.Surname == "Д_Смирнова");
+            Fire -= dent.OnFire;
+            Fire.Invoke();
         }
     }
 }

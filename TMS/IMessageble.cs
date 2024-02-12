@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TMS
 {
-    internal interface IMessageble
+    public interface IMessageble
     {
         string SendMessage();
     }

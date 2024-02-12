@@ -79,6 +79,5 @@ namespace TMS.Persons
         }
 
         public abstract void OnFire();
-       
     }
 }
